@@ -1,0 +1,6 @@
+{
+  "routes": {
+    "site1.localhost": "3000",
+    "site2.localhost": "3001"
+  }
+}
