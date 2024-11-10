@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error {{.StatusCode}}</title>
+    <link rel="stylesheet" href="/static/css/error.css">
 </head>
 <body>
-    <h1>{{.Message}}</h1>
-    <p>{{.Description}}</p>
+    <div class="container">
+        <h1>Error {{.StatusCode}}</h1>
+        <p>{{.Message}}</p>
+        <div class="description">
+            <p>{{.Description}}</p>
+        </div>
+    </div>
 </body>
 </html>
