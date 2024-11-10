@@ -10,6 +10,12 @@ import (
 	"net/url"
 )
 
+type errorPageData struct {
+	StatusCode  int
+	Message     string
+	Description string
+}
+
 func resolveHostName(fullHostName string) string {
 	host, _, err := net.SplitHostPort(fullHostName)
 	if err != nil {
@@ -25,24 +31,20 @@ func renderErrorPage(writer http.ResponseWriter, statusCode int, message string,
 	tmpl, err := template.New("errorPage").ParseFiles("templates/errorPage.html")
 	if err != nil {
 		http.Error(writer, "Failed to load error page template", http.StatusInternalServerError)
-		log.Printf("Error loading template: %v", err) // Log the error
+		log.Printf("Error loading template: %v", err)
 		return
 	}
 
-	data := struct {
-		StatusCode  int
-		Message     string
-		Description string
-	}{
+	errorData := errorPageData{
 		StatusCode:  statusCode,
 		Message:     http.StatusText(statusCode),
 		Description: description,
 	}
 
-	err = tmpl.ExecuteTemplate(writer, "errorPage.html", data)
+	err = tmpl.ExecuteTemplate(writer, "errorPage.html", errorData)
 	if err != nil {
 		http.Error(writer, "Failed to render error page", http.StatusInternalServerError)
-		log.Printf("Error rendering template: %v", err) // Log the error
+		log.Printf("Error rendering template: %v", err)
 	}
 }
 
