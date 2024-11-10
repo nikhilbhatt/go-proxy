@@ -2,11 +2,11 @@ FROM golang:1.23.2-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod ./
+RUN go mod download
 
-RUN go build -o proxy-server .
+COPY . .
 
 EXPOSE 80
 
-CMD ["./proxy-server"]
-
+CMD ["go", "run", "."]
