@@ -5,5 +5,5 @@ This project is a Go-based reverse proxy that allows local development with cust
 #### Commands
 ```
 docker build -t go-proxy .
-docker run -p 80:80 -v $(pwd)/routes.json:/app/routes.json go-proxy;
+docker run -p 80:80 -v $(pwd)/routes.json:/app/routes.json proxy-server
 ```
