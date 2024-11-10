@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -10,12 +11,12 @@ import (
 )
 
 type Route struct {
-	Subdomain string `json:"subdomain"`
-	Port      string `json:"port"`
+	Subdomain string
+	Port      string
 }
 
 type Config struct {
-	Routes map[string]string `json:"routes"`
+	Routes map[string]string
 }
 
 var config Config
@@ -38,11 +39,22 @@ func loadConfig() {
 	log.Printf("Loaded config: %+v", config)
 }
 
+func resolveHostName(fullHostName string) string {
+	host, _, err := net.SplitHostPort(fullHostName)
+	if err != nil {
+		host = fullHostName
+	}
+
+	return host
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
-	port, exists := config.Routes[r.Host]
+	host := resolveHostName(r.Host)
+
+	port, exists := config.Routes[host]
 
 	if !exists {
-		log.Printf("Not Found: Host '%s' not in configuration. Current Routes: %+v", r.Host, config.Routes)
+		log.Printf("Not Found: Host '%s' not in configuration", r.Host)
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}

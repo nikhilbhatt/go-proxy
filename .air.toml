@@ -1,0 +1,10 @@
+# air.toml
+
+[build]
+cmd = "go build -o ./tmp/main ."
+bin = "./tmp/main"
+include_ext = ["go"]
+exclude_dir = ["tmp"]
+
+[log]
+color = true

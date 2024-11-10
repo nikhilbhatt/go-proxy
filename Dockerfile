@@ -2,11 +2,13 @@ FROM golang:1.23.2-alpine
 
 WORKDIR /app
 
-COPY . .
+RUN go install github.com/air-verse/air@latest
 
-RUN go build -o proxy-server .
+COPY go.mod ./
+RUN go mod download
+
+COPY . .
 
 EXPOSE 80
 
-CMD ["./proxy-server"]
-
+CMD ["air", "-c", ".air.toml"]
