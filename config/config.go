@@ -2,6 +2,8 @@ package config
 
 import (
 	"encoding/json"
+	"html/template"
+	"net/http"
 	"os"
 )
 
@@ -26,6 +28,22 @@ func LoadConfig(filePath string) error {
 	}
 
 	return nil
+}
+
+func RenderConfigPage(writer http.ResponseWriter) {
+	tmpl, err := template.New("configPage").ParseFiles("templates/configPage.html")
+
+	if err != nil {
+		http.Error(writer, "Failed to load config page template", http.StatusInternalServerError)
+		return
+	}
+
+	config := GetConfig()
+
+	err = tmpl.ExecuteTemplate(writer, "configPage.html", config)
+	if err != nil {
+		http.Error(writer, "Failed to render error page", http.StatusInternalServerError)
+	}
 }
 
 func GetConfig() Config {
