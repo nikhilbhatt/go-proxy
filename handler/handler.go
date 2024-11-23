@@ -51,6 +51,11 @@ func renderErrorPage(writer http.ResponseWriter, statusCode int, message string,
 func ProxyHandler(writer http.ResponseWriter, request *http.Request) {
 	host := resolveHostName(request.Host)
 
+	if host == "localhost" || host == "127.0.0.1" {
+		config.RenderConfigPage(writer)
+		return
+	}
+
 	port, exists := config.GetConfig().Routes[host]
 
 	if !exists {

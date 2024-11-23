@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Page</title>
+    <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="stylesheet" href="/static/css/config.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Application Configuration</h1>
+    <p class="description">Below are the current application routes:</p>
+    <table class="routes-table">
+        <thead>
+            <tr>
+                <th>Port</th>
+                <th>Proxy Site</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $key, $value := .Routes}}
+            <tr>
+                <td>
+                  <a href="http://localhost:{{$value}}" target="_blank" rel="noopener noreferrer">
+                    localhost:{{$value}}
+                </a>
+              </td>
+                <td>{{$key}}</td>
+                <td>
+                    <a href="http://{{$key}}" target="_blank" rel="noopener noreferrer">
+                        <button>Visit</button>
+                    </a>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+  </div>
+</body>
+</html>
